@@ -65,12 +65,25 @@ public final class DynamicIntArray {
     }
     
     public void remove(int index) {
+        preventFromAccessingInvalidIndex(index);
+        reduceIndexFromContainer(index);
+        decreaseValuesCount();
+    }
+
+    public void replace(int index, int value) {
+        preventFromAccessingInvalidIndex(index);
+        this.container[index] = value;
+    }
+
+    public int get(int index) {
+        preventFromAccessingInvalidIndex(index);
+        return this.container[index];
+    }
+
+    private void preventFromAccessingInvalidIndex(int index) {
         if (isIndexOutOfRange(index)) {
             throw new ArrayIndexOutOfBoundsException("Index out of collection bounds");
         }
-
-        reduceIndexFromContainer(index);
-        decreaseValuesCount();
     }
 
     private boolean isIndexOutOfRange(int deliveredIndex) {
