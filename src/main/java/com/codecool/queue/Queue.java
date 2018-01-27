@@ -31,13 +31,13 @@ public class Queue<T> {
         this.length++;
     }
 
-    private void protectFromActionOnEmptyQueue() {
+    private void protectFromActionOnEmptyQueue() throws CallOnEmptyQueueException {
         if (this.isEmpty()) {
-            throw new IllegalStateException("Illegal action on empty stack.");
+            throw new CallOnEmptyQueueException("Illegal action on empty queue.");
         }
     }
 
-    public T dequeue() {
+    public T dequeue() throws CallOnEmptyQueueException {
         protectFromActionOnEmptyQueue();
 
         try {
@@ -48,7 +48,7 @@ public class Queue<T> {
         }
     }
 
-    public T peek() {
+    public T peek() throws CallOnEmptyQueueException {
         protectFromActionOnEmptyQueue();
         return this.head.getData();
     }
