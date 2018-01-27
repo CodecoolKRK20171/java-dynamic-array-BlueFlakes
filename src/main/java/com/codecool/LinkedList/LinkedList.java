@@ -2,12 +2,14 @@ package com.codecool.LinkedList;
 
 import com.codecool.Node;
 
+import java.util.Iterator;
+
 public class LinkedList<T> {
     private Node<T> head;
     private Node<T> last;
     private int length;
 
-    // head / tail / length / add / insert / remove / iterate
+    // head / tail / length / add / insert / remove / iterator
 
     public void add(T data) {
         if (isFirstCall()) {
@@ -70,7 +72,7 @@ public class LinkedList<T> {
     }
 
     public void remove(int index) {
-        validateStateForRemoveAndHandleIndexEqualsZeroCase(index);
+        validateStateForRemoveAndHandleIndexZero(index);
 
         Node<T> currentNode = this.head;
         Node<T> previousNode = this.head;
@@ -84,7 +86,7 @@ public class LinkedList<T> {
         decreaseLength();
     }
 
-    private void validateStateForRemoveAndHandleIndexEqualsZeroCase(int index) {
+    private void validateStateForRemoveAndHandleIndexZero(int index) {
         if (index > lastFilledIndex()) {
             throw new IndexOutOfBoundsException();
 
@@ -97,8 +99,38 @@ public class LinkedList<T> {
         return this.length != 0;
     }
 
-    public void iterate() {
-        // impl Iterator<T>
+    public Iterator<T> iterator() {
+        return new LinkedListIterator(this.head);
+    }
+
+    private class LinkedListIterator implements Iterator<T> {
+        private Node<T> head;
+
+        public LinkedListIterator(Node<T> head) {
+            this.head = head;
+        }
+
+        @Override
+        public boolean hasNext( ) {
+            if (this.head != null) {
+                return true;
+            }
+
+            return false;
+        }
+
+        @Override
+        public T next() {
+            if (this.hasNext()) {
+                try {
+                    return this.head.getData();
+                } finally {
+                    this.head = this.head.getNext();
+                }
+            }
+
+            return null;
+        }
     }
 
     //region setters and getters
