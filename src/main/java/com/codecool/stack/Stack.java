@@ -9,13 +9,13 @@ public class Stack<T> {
 
 
     public Stack(int capacity) throws ImproperArgumentException {
-        if (capacity < 0)
+        if (capacity < 1)
             throw new ImproperArgumentException("Capacity should be positive number");
 
         this.capacity = capacity;
     }
 
-    public T pop() {
+    public T pop() throws CallOnEmptyStackException {
         protectFromActionOnEmptyStack();
 
         try {
@@ -33,9 +33,9 @@ public class Stack<T> {
     }
 
 
-    private void protectFromActionOnEmptyStack() {
+    private void protectFromActionOnEmptyStack() throws CallOnEmptyStackException {
         if (this.isEmpty()) {
-            throw new IllegalStateException("Illegal action on empty stack.");
+            throw new CallOnEmptyStackException("Illegal action on empty stack.");
         }
     }
 
@@ -47,7 +47,7 @@ public class Stack<T> {
         this.length++;
     }
 
-    public T peek() {
+    public T peek() throws CallOnEmptyStackException {
         protectFromActionOnEmptyStack();
         return this.head.getData();
     }
